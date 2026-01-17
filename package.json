@@ -1,0 +1,54 @@
+{
+  "name": "rc-text-ellipsis",
+  "version": "1.0.0",
+  "description": "rc-text-ellipsis ui component for react",
+  "keywords": [
+    "react",
+    "react-component",
+    "react-rc-text-ellipsis",
+    "rc-text-ellipsis"
+  ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "homepage": "https://github.com/wulala0102/rc-text-ellipsis",
+  "author": "sarahwu8788@gmail.com",
+  
+  "repository": "react-component/rc-text-ellipsis",
+  
+  "bugs": "https://github.com/wulala0102/rc-text-ellipsis/issues",
+  "files":["lib", "assets/*.css"],
+  "license": "MIT",
+  
+  "main":"./lib/index",
+  "config":{
+    "port": 8000
+  },
+  "scripts": {
+    "watch-tsc": "rc-tools run watch-tsc",
+    "build": "rc-tools run build",
+    "gh-pages": "rc-tools run gh-pages",
+    "start": "rc-tools run server",
+    "pub": "rc-tools run pub --babel-runtime",
+    "lint": "rc-tools run lint",
+    "karma": "rc-tools run karma",
+    "saucelabs": "rc-tools run saucelabs",
+    "test": "rc-tools run test",
+    "chrome-test": "rc-tools run chrome-test",
+    "coverage": "rc-tools run coverage"
+  },
+  "dependencies": {
+    "babel-runtime": "6.x",
+  },
+  "devDependencies": {
+    "expect.js": "0.3.x",
+    "pre-commit": "1.x",
+    "rc-tools": "5.x",
+    "react": "15.x",
+    "react-addons-test-utils": "15.x",
+    "react-dom": "15.x"
+  },
+  "pre-commit": [
+    "lint"
+  ]
+}
