@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import TextEllipsis from '../src/TextEllipsis';
+import TextEllipsis from '../src/TextEllipsis.tsx';
 import '../assets/index.css';
 
 const longText =
