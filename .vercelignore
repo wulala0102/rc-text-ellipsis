@@ -5,6 +5,5 @@ es
 coverage
 tests
 examples
-src
 *.log
 .DS_Store
