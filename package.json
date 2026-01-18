@@ -9,7 +9,7 @@
     "rc-text-ellipsis"
   ],
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=18.0.0"
   },
   "homepage": "https://github.com/wulala0102/rc-text-ellipsis",
   "author": "sarahwu8788@gmail.com",
@@ -38,15 +38,13 @@
     "coverage": "rc-tools run coverage"
   },
   "dependencies": {
-    "babel-runtime": "6.x",
   },
   "devDependencies": {
-    "expect.js": "0.3.x",
-    "pre-commit": "1.x",
-    "rc-tools": "5.x",
-    "react": "15.x",
-    "react-addons-test-utils": "15.x",
-    "react-dom": "15.x"
+    "expect.js": "^0.3.1",
+    "pre-commit": "^1.2.2",
+    "rc-tools": "^9.6.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "pre-commit": [
     "lint"
