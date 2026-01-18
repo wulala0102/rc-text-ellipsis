@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import fs from 'fs';
 import { defineConfig } from 'vite';
 
 const rootPath = path.resolve(__dirname, 'demo');
@@ -20,6 +21,7 @@ export default defineConfig({
           console.log('Resolving:', source);
           console.log('From:', importer);
           const resolved = path.resolve(path.dirname(importer), source);
+          const content = fs.readFileSync(resolved, 'utf-8');
           console.log('Resolved to:', resolved);
         }
       },

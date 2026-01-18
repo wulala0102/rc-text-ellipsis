@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import '../assets/index.css';
-import TextEllipsis from '../src/TextEllipsis';
+import TextEllipsis from '../src/TextEllipsis.tsx';
 
 const longText =
   'This is a very long text that needs to be truncated with ellipsis. It contains multiple sentences and should demonstrate the text ellipsis functionality. The component supports different positions for the ellipsis including start, middle, and end positions. You can also expand and collapse the text by clicking the action button. This component is perfect for limiting text in cards, lists, descriptions, and any other UI elements where space is limited.';
