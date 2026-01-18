@@ -5,11 +5,6 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [react()],
   root: 'demo',
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, '.'),
-    },
-  },
   build: {
     outDir: '../dist',
     emptyOutDir: true,
