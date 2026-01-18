@@ -1,0 +1,10 @@
+node_modules
+.git
+lib
+es
+coverage
+tests
+examples
+src
+*.log
+.DS_Store

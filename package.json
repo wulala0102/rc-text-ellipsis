@@ -27,6 +27,9 @@
   "scripts": {
     "watch-tsc": "rc-tools run watch-tsc",
     "build": "rc-tools run build",
+    "build:example": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
     "gh-pages": "rc-tools run gh-pages",
     "start": "rc-tools run server",
     "pub": "rc-tools run pub --babel-runtime",
@@ -44,6 +47,7 @@
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^30.0.0",
+    "@vitejs/plugin-react": "^5.1.2",
     "expect.js": "^0.3.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.2.0",
@@ -52,7 +56,8 @@
     "rc-tools": "^9.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "ts-jest": "^29.4.6"
+    "ts-jest": "^29.4.6",
+    "vite": "^7.3.1"
   },
   "pre-commit": [
     "lint"

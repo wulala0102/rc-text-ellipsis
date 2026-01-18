@@ -32,6 +32,10 @@ React TextEllipsis Component - A powerful and flexible text truncation component
 - 💪 TypeScript support
 - ⚡ Efficient binary search algorithm
 
+## Demo
+
+🚀 [Live Demo](https://rc-text-ellipsis.vercel.app) - See all features in action!
+
 
 ## Installation
 
