@@ -13,15 +13,15 @@
   },
   "homepage": "https://github.com/wulala0102/rc-text-ellipsis",
   "author": "sarahwu8788@gmail.com",
-  
   "repository": "react-component/rc-text-ellipsis",
-  
   "bugs": "https://github.com/wulala0102/rc-text-ellipsis/issues",
-  "files":["lib", "assets/*.css"],
+  "files": [
+    "lib",
+    "assets/*.css"
+  ],
   "license": "MIT",
-  
-  "main":"./lib/index",
-  "config":{
+  "main": "./lib/index",
+  "config": {
     "port": 8000
   },
   "scripts": {
@@ -38,6 +38,7 @@
     "coverage": "rc-tools run coverage"
   },
   "dependencies": {
+    "classnames": "^2.5.1"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",

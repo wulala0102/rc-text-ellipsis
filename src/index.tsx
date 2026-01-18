@@ -1,3 +1,4 @@
-// export this package's api
-import RcTextEllipsis from './TextEllipsis';
-export default RcTextEllipsis;
+import TextEllipsis from './TextEllipsis';
+
+export default TextEllipsis;
+export type { TextEllipsisProps, TextEllipsisRef } from './TextEllipsis';
