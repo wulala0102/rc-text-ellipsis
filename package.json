@@ -31,21 +31,28 @@
     "start": "rc-tools run server",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint",
-    "karma": "rc-tools run karma",
-    "saucelabs": "rc-tools run saucelabs",
-    "test": "rc-tools run test",
-    "chrome-test": "rc-tools run chrome-test",
-    "coverage": "rc-tools run coverage"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:old": "rc-tools run test"
   },
   "dependencies": {
     "classnames": "^2.5.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "expect.js": "^0.3.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
     "pre-commit": "^1.2.2",
     "rc-tools": "^9.6.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "ts-jest": "^29.4.6"
   },
   "pre-commit": [
     "lint"
