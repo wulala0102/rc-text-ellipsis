@@ -11,7 +11,20 @@ console.log('outDir path:', outDirPath);
 
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'debug-resolver',
+      resolveId(source, importer) {
+        if (importer && source.startsWith('../')) {
+          console.log('Resolving:', source);
+          console.log('From:', importer);
+          const resolved = path.resolve(path.dirname(importer), source);
+          console.log('Resolved to:', resolved);
+        }
+      },
+    },
+  ],
   root: rootPath,
   build: {
     outDir: outDirPath,
