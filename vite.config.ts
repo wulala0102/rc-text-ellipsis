@@ -9,6 +9,7 @@ console.log('__dirname:', __dirname);
 console.log('root path:', rootPath);
 console.log('outDir path:', outDirPath);
 
+
 export default defineConfig({
   plugins: [react()],
   root: rootPath,
