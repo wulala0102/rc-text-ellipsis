@@ -31,3 +31,5 @@ coverage
 /ios/
 /android/
 .claude/
+.vercel
+.env*.local
