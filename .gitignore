@@ -33,3 +33,4 @@ coverage
 .claude/
 .vercel
 .env*.local
+/dist
