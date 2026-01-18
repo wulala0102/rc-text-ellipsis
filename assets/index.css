@@ -1,0 +1,20 @@
+.rc-text-ellipsis {
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.rc-text-ellipsis__action {
+  cursor: pointer;
+  color: #1989fa;
+  user-select: none;
+}
+
+.rc-text-ellipsis__action:hover {
+  opacity: 0.8;
+}
+
+.rc-text-ellipsis__action:active {
+  opacity: 0.6;
+}
