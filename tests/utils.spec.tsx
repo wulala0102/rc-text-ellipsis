@@ -207,5 +207,58 @@ describe('Utils', () => {
       expect(typeof result).toBe('string');
       expect(result.length).toBeGreaterThan(0);
     });
+
+    it('should handle position="middle" with actionHTML', () => {
+      const longText = 'This is a very long text that needs to be truncated in the middle';
+      const actionHTML = '<span>More</span>';
+      const result = calcEllipsisText(container, 30, {
+        actionHTML,
+        content: longText,
+        dots: '...',
+        position: 'middle',
+      });
+
+      expect(typeof result).toBe('string');
+      expect(result.includes('...')).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('should handle position="start" with actionHTML', () => {
+      const longText = 'This is a very long text that needs to be truncated at start';
+      const actionHTML = '<span>More</span>';
+      const result = calcEllipsisText(container, 30, {
+        actionHTML,
+        content: longText,
+        dots: '...',
+        position: 'start',
+      });
+
+      expect(typeof result).toBe('string');
+      expect(result.startsWith('...')).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('should handle middle position when content fits exactly', () => {
+      container.style.height = 'auto';
+      const shortText = 'Short';
+      const result = calcEllipsisText(container, 1000, {
+        actionHTML: '',
+        content: shortText,
+        dots: '...',
+        position: 'middle',
+      });
+
+      expect(typeof result).toBe('string');
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('should handle pxToNum with string that has no digits', () => {
+      expect(pxToNum('abc')).toBe(0);
+    });
+
+    it('should handle pxToNum with decimal numbers', () => {
+      expect(pxToNum('.5')).toBe(0.5);
+      expect(pxToNum('0.75')).toBe(0.75);
+    });
   });
 });

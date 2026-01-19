@@ -294,4 +294,119 @@ describe('TextEllipsis', () => {
       });
     });
   });
+
+  describe('Edge Cases', () => {
+    it('should handle window resize', async () => {
+      const longText = 'A'.repeat(1000);
+      const { container } = render(
+        <TextEllipsis content={longText} rows={1} expandText="Expand" />,
+      );
+
+      await waitFor(() => {
+        expect(container.querySelector('.rc-text-ellipsis')).toBeInTheDocument();
+      });
+
+      // Trigger resize event
+      fireEvent(window, new Event('resize'));
+
+      await waitFor(() => {
+        expect(container.querySelector('.rc-text-ellipsis')).toBeInTheDocument();
+      });
+    });
+
+    it('should handle onClickAction being undefined', async () => {
+      const longText = 'A'.repeat(1000);
+      const { container } = render(
+        <TextEllipsis
+          content={longText}
+          rows={1}
+          expandText="Expand"
+        />,
+      );
+
+      await waitFor(() => {
+        const actionElement = container.querySelector(
+          '.rc-text-ellipsis__action',
+        ) as HTMLElement;
+        if (actionElement) {
+          // Should not throw error when onClickAction is undefined
+          expect(() => fireEvent.click(actionElement)).not.toThrow();
+        }
+      });
+    });
+
+    it('should render custom action with expanded state', async () => {
+      const longText = 'A'.repeat(1000);
+      const customAction = jest.fn((expanded) => (
+        <button data-expanded={expanded}>{expanded ? 'Less' : 'More'}</button>
+      ));
+
+      const { container } = render(
+        <TextEllipsis
+          content={longText}
+          rows={1}
+          action={customAction}
+        />,
+      );
+
+      await waitFor(() => {
+        const actionElement = container.querySelector('.rc-text-ellipsis__action');
+        if (actionElement) {
+          expect(customAction).toHaveBeenCalledWith(false);
+
+          fireEvent.click(actionElement);
+
+          expect(customAction).toHaveBeenCalledWith(true);
+        }
+      });
+    });
+
+    it('should call onClickAction with event when clicking action', async () => {
+      const longText = 'A'.repeat(1000);
+      const onClickAction = jest.fn();
+
+      const { container } = render(
+        <TextEllipsis
+          content={longText}
+          rows={1}
+          expandText="Expand"
+          onClickAction={onClickAction}
+        />,
+      );
+
+      await waitFor(() => {
+        const actionElement = container.querySelector(
+          '.rc-text-ellipsis__action',
+        ) as HTMLElement;
+        if (actionElement) {
+          fireEvent.click(actionElement);
+          expect(onClickAction).toHaveBeenCalled();
+          expect(onClickAction.mock.calls[0][0]).toBeInstanceOf(Object);
+        }
+      });
+    });
+
+    it('should render custom action when action prop is provided', async () => {
+      const longText = 'A'.repeat(1000);
+      const customAction = (expanded: boolean) => (
+        <strong>{expanded ? 'Collapse' : 'Expand'}</strong>
+      );
+
+      const { container } = render(
+        <TextEllipsis
+          content={longText}
+          rows={1}
+          action={customAction}
+        />,
+      );
+
+      await waitFor(() => {
+        const actionElement = container.querySelector('.rc-text-ellipsis__action');
+        if (actionElement) {
+          expect(actionElement.querySelector('strong')).toBeInTheDocument();
+          expect(actionElement.querySelector('strong')).toHaveTextContent('Expand');
+        }
+      });
+    });
+  });
 });
