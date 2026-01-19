@@ -57,7 +57,7 @@
     "pre-commit": "^1.2.2",
     "rc-tools": "^9.6.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.2.3",
     "ts-jest": "^29.4.6",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"
