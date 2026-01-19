@@ -26,6 +26,7 @@ module.exports = {
     '/tests/',
     '/examples/',
   ],
+  coverageReporters: ['text', 'lcov', 'html'],
   testPathIgnorePatterns: ['/node_modules/', '/lib/', '/es/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
 };
