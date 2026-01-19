@@ -3,21 +3,16 @@
 React TextEllipsis Component - A powerful and flexible text truncation component with expand/collapse functionality.
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![build status][ci-image]][ci-url]
 [![Test coverage][coveralls-image]][coveralls-url]
-[![gemnasium deps][gemnasium-image]][gemnasium-url]
 [![npm download][download-image]][download-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-text-ellipsis.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-text-ellipsis
-[travis-image]: https://img.shields.io/travis/wulala0102/rc-text-ellipsis.svg?style=flat-square
-[travis-url]: https://travis-ci.org/wulala0102/rc-text-ellipsis
+[ci-image]: https://github.com/wulala0102/rc-text-ellipsis/workflows/CI/badge.svg
+[ci-url]: https://github.com/wulala0102/rc-text-ellipsis/actions
 [coveralls-image]: https://img.shields.io/coveralls/wulala0102/rc-text-ellipsis.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/wulala0102/rc-text-ellipsis?branch=master
-[gemnasium-image]: http://img.shields.io/gemnasium/wulala0102/rc-text-ellipsis.svg?style=flat-square
-[gemnasium-url]: https://gemnasium.com/wulala0102/rc-text-ellipsis
-[node-image]: https://img.shields.io/badge/node.js-%3E=_18.0-green.svg?style=flat-square
-[node-url]: http://nodejs.org/download/
+[coveralls-url]: https://coveralls.io/r/wulala0102/rc-text-ellipsis?branch=main
 [download-image]: https://img.shields.io/npm/dm/rc-text-ellipsis.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-text-ellipsis
 
