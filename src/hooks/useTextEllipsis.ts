@@ -9,15 +9,18 @@ interface UseTextEllipsisOptions {
   expandText: string;
   rootRef: React.RefObject<HTMLDivElement>;
   actionRef: React.RefObject<HTMLSpanElement>;
+  suffixRef: React.RefObject<HTMLSpanElement>;
   action?: (expanded: boolean) => React.ReactNode;
+  suffix?: (expanded: boolean, isOverflow: boolean) => React.ReactNode;
 }
 
 export const useTextEllipsis = (options: UseTextEllipsisOptions) => {
-  const { content, rows, dots, position, expandText, rootRef, actionRef, action } = options;
+  const { content, rows, dots, position, expandText, rootRef, actionRef, suffixRef, action, suffix } = options;
 
   const [text, setText] = React.useState(content);
   const [expanded, setExpanded] = React.useState(false);
   const [hasAction, setHasAction] = React.useState(false);
+  const [isOverflow, setIsOverflow] = React.useState(false);
   const needRecalculateRef = React.useRef(false);
 
   const calcEllipsised = React.useCallback(() => {
@@ -36,7 +39,15 @@ export const useTextEllipsis = (options: UseTextEllipsisOptions) => {
     );
 
     if (maxHeight < container.offsetHeight) {
+      setIsOverflow(true);
       setHasAction(true);
+
+      // 如果使用 suffix，需要计算 suffix 的 HTML
+      const suffixHTML = suffix
+        ? suffixRef.current?.outerHTML ?? ''
+        : '';
+
+      // 如果使用 action，需要计算 action 的 HTML
       const actionHTML = action
         ? actionRef.current?.outerHTML ?? ''
         : expandText;
@@ -46,16 +57,17 @@ export const useTextEllipsis = (options: UseTextEllipsisOptions) => {
           content,
           position,
           dots,
-          actionHTML,
+          actionHTML: suffix ? suffixHTML : actionHTML,
         }),
       );
     } else {
+      setIsOverflow(false);
       setHasAction(false);
       setText(content);
     }
 
     document.body.removeChild(container);
-  }, [content, rows, position, dots, expandText, action, rootRef, actionRef]);
+  }, [content, rows, position, dots, expandText, action, suffix, rootRef, actionRef, suffixRef]);
 
   const toggle = React.useCallback((isExpanded?: boolean) => {
     setExpanded((prev) => (isExpanded !== undefined ? isExpanded : !prev));
@@ -64,11 +76,11 @@ export const useTextEllipsis = (options: UseTextEllipsisOptions) => {
   React.useEffect(() => {
     calcEllipsised();
 
-    if (action) {
+    if (action || suffix) {
       const timer = setTimeout(calcEllipsised, 0);
       return () => clearTimeout(timer);
     }
-  }, [calcEllipsised, action]);
+  }, [calcEllipsised, action, suffix]);
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -83,6 +95,7 @@ export const useTextEllipsis = (options: UseTextEllipsisOptions) => {
     text,
     expanded,
     hasAction,
+    isOverflow,
     toggle,
   };
 };

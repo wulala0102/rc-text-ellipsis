@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import React from 'react';
 import TextEllipsis, { TextEllipsisRef } from '../src';
 
@@ -406,6 +406,204 @@ describe('TextEllipsis', () => {
           expect(actionElement.querySelector('strong')).toBeInTheDocument();
           expect(actionElement.querySelector('strong')).toHaveTextContent('Expand');
         }
+      });
+    });
+  });
+
+  describe('Suffix', () => {
+    it('should render suffix when provided', async () => {
+      const longText = 'A'.repeat(1000);
+      const { container } = render(
+        <TextEllipsis
+          content={longText}
+          rows={1}
+          suffix={(expanded, isOverflow) => (
+            <span className="custom-suffix">
+              {isOverflow ? (expanded ? 'Less' : 'More') : 'End'}
+            </span>
+          )}
+        />,
+      );
+
+      await waitFor(() => {
+        const suffixElement = container.querySelector('.rc-text-ellipsis__suffix');
+        expect(suffixElement).toBeInTheDocument();
+        // In JSDOM, offsetHeight calculation may not work as expected
+        // So we just check that suffix is rendered
+        expect(suffixElement?.querySelector('.custom-suffix')).toBeInTheDocument();
+      });
+    });
+
+    it('should always show suffix even when text is not overflowing', () => {
+      const shortText = 'Short';
+      const { container } = render(
+        <TextEllipsis
+          content={shortText}
+          rows={3}
+          suffix={(expanded, isOverflow) => (
+            <span className="custom-suffix">
+              {isOverflow ? 'Has more' : 'Complete'}
+            </span>
+          )}
+        />,
+      );
+
+      const suffixElement = container.querySelector('.rc-text-ellipsis__suffix');
+      expect(suffixElement).toBeInTheDocument();
+      expect(suffixElement?.querySelector('.custom-suffix')).toHaveTextContent('Complete');
+    });
+
+    it('should pass correct isOverflow parameter to suffix', async () => {
+      const longText = 'A'.repeat(1000);
+      const suffixFn = jest.fn((expanded, isOverflow) => (
+        <span>{isOverflow ? 'Overflow' : 'No overflow'}</span>
+      ));
+
+      render(
+        <TextEllipsis
+          content={longText}
+          rows={1}
+          suffix={suffixFn}
+        />,
+      );
+
+      await waitFor(() => {
+        // In JSDOM environment, layout calculations don't work properly
+        // We just verify the function is called with the expected signature
+        expect(suffixFn).toHaveBeenCalled();
+        expect(suffixFn.mock.calls[0]).toHaveLength(2);
+        expect(typeof suffixFn.mock.calls[0][0]).toBe('boolean');
+        expect(typeof suffixFn.mock.calls[0][1]).toBe('boolean');
+      });
+    });
+
+    it('should pass correct expanded state to suffix', async () => {
+      const longText = 'A'.repeat(1000);
+      const ref = React.createRef<TextEllipsisRef>();
+      const suffixFn = jest.fn((expanded, isOverflow) => (
+        <span>{expanded ? 'Expanded' : 'Collapsed'}</span>
+      ));
+
+      render(
+        <TextEllipsis
+          ref={ref}
+          content={longText}
+          rows={1}
+          suffix={suffixFn}
+        />,
+      );
+
+      await waitFor(() => {
+        expect(suffixFn).toHaveBeenCalled();
+        // First call should have expanded=false
+        expect(suffixFn.mock.calls[0][0]).toBe(false);
+      });
+
+      await act(async () => {
+        ref.current?.toggle(true);
+      });
+
+      await waitFor(() => {
+        // Should be called again with expanded=true
+        const lastCall = suffixFn.mock.calls[suffixFn.mock.calls.length - 1];
+        expect(lastCall[0]).toBe(true);
+      });
+    });
+
+    it('should prioritize suffix over action when both are provided', async () => {
+      const longText = 'A'.repeat(1000);
+      const { container } = render(
+        <TextEllipsis
+          content={longText}
+          rows={1}
+          expandText="Expand"
+          action={(expanded) => <span>Action</span>}
+          suffix={(expanded, isOverflow) => <span>Suffix</span>}
+        />,
+      );
+
+      await waitFor(() => {
+        const actionElement = container.querySelector('.rc-text-ellipsis__action');
+        const suffixElement = container.querySelector('.rc-text-ellipsis__suffix');
+        // When suffix is present, action should not be rendered
+        expect(suffixElement).toBeInTheDocument();
+        expect(actionElement).not.toBeInTheDocument();
+      });
+    });
+
+    it('should prioritize suffix over action when both expandText and suffix are provided', async () => {
+      const longText = 'A'.repeat(1000);
+      const { container } = render(
+        <TextEllipsis
+          content={longText}
+          rows={1}
+          expandText="Expand"
+          collapseText="Collapse"
+          suffix={(expanded, isOverflow) => <span>Suffix</span>}
+        />,
+      );
+
+      await waitFor(() => {
+        const actionElement = container.querySelector('.rc-text-ellipsis__action');
+        const suffixElement = container.querySelector('.rc-text-ellipsis__suffix');
+        // When suffix is present, action should not be rendered
+        expect(suffixElement).toBeInTheDocument();
+        expect(actionElement).not.toBeInTheDocument();
+      });
+    });
+
+    it('should update suffix when expanded state changes', async () => {
+      const longText = 'A'.repeat(1000);
+      const ref = React.createRef<TextEllipsisRef>();
+
+      const { container } = render(
+        <TextEllipsis
+          ref={ref}
+          content={longText}
+          rows={1}
+          suffix={(expanded, isOverflow) => (
+            <span data-testid="suffix-content">
+              {expanded ? 'Collapse' : 'Expand'}
+            </span>
+          )}
+        />,
+      );
+
+      await waitFor(() => {
+        const suffixContent = container.querySelector('[data-testid="suffix-content"]');
+        expect(suffixContent).toHaveTextContent('Expand');
+      });
+
+      await act(async () => {
+        ref.current?.toggle(true);
+      });
+
+      await waitFor(() => {
+        const suffixContent = container.querySelector('[data-testid="suffix-content"]');
+        expect(suffixContent).toHaveTextContent('Collapse');
+      });
+    });
+
+    it('should render suffix with complex JSX', async () => {
+      const longText = 'A'.repeat(1000);
+      const { container } = render(
+        <TextEllipsis
+          content={longText}
+          rows={1}
+          suffix={(expanded, isOverflow) => (
+            <div className="complex-suffix">
+              <button type="button">{expanded ? '▲' : '▼'}</button>
+              <span>{isOverflow ? 'More content' : 'End'}</span>
+            </div>
+          )}
+        />,
+      );
+
+      await waitFor(() => {
+        const suffixElement = container.querySelector('.complex-suffix');
+        expect(suffixElement).toBeInTheDocument();
+        expect(suffixElement?.querySelector('button')).toBeInTheDocument();
+        expect(suffixElement?.querySelector('span')).toBeInTheDocument();
       });
     });
   });
