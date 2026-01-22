@@ -37,12 +37,16 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:old": "rc-tools run test"
+    "test:old": "rc-tools run test",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish"
   },
   "dependencies": {
     "classnames": "^2.5.1"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.8",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^14.6.1",
