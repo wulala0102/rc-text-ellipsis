@@ -123,6 +123,70 @@ const App: React.FC = () => {
           collapseText="Collapse"
         />
       </div>
+
+      <div style={{ marginBottom: '40px' }}>
+        <h2>With Suffix (Always Visible)</h2>
+        <TextEllipsis
+          rows={2}
+          content={longText}
+          suffix={(expanded, isOverflow) => (
+            <span style={{ color: 'blue', marginLeft: '4px', cursor: 'pointer' }}>
+              {isOverflow ? (expanded ? '[Collapse]' : '[Expand]') : '[Complete]'}
+            </span>
+          )}
+        />
+      </div>
+
+      <div style={{ marginBottom: '40px' }}>
+        <h2>With Suffix (Custom Style)</h2>
+        <TextEllipsis
+          rows={2}
+          content={longText}
+          suffix={(expanded, isOverflow) => (
+            <span
+              style={{
+                color: '#1890ff',
+                fontWeight: 'bold',
+                padding: '2px 8px',
+                border: '1px solid #1890ff',
+                borderRadius: '4px',
+                marginLeft: '8px',
+                fontSize: '12px'
+              }}
+            >
+              {isOverflow ? (expanded ? '▲' : '▼') : '✓'}
+            </span>
+          )}
+        />
+      </div>
+
+      <div style={{ marginBottom: '40px' }}>
+        <h2>With Suffix (Short Text - No Overflow)</h2>
+        <TextEllipsis
+          rows={3}
+          content="This is a short text that doesn't need ellipsis."
+          suffix={(expanded, isOverflow) => (
+            <span style={{ color: isOverflow ? 'orange' : 'green', marginLeft: '4px' }}>
+              {isOverflow ? '[Has More]' : '[End]'}
+            </span>
+          )}
+        />
+      </div>
+
+      <div style={{ marginBottom: '40px' }}>
+        <h2>Suffix vs Action (Suffix has priority)</h2>
+        <TextEllipsis
+          rows={2}
+          content={longText}
+          expandText="Expand"
+          collapseText="Collapse"
+          suffix={(expanded, isOverflow) => (
+            <span style={{ color: 'green' }}>
+              [Suffix is shown because it takes priority]
+            </span>
+          )}
+        />
+      </div>
     </div>
   );
 };

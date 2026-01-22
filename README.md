@@ -79,6 +79,20 @@ function App() {
 />
 ```
 
+### With Suffix (Always Visible)
+
+```tsx
+<TextEllipsis
+  rows={2}
+  content="Your long text here..."
+  suffix={(expanded, isOverflow) => (
+    <span style={{ color: 'blue', marginLeft: '4px' }}>
+      {isOverflow ? (expanded ? '[Collapse]' : '[Expand]') : '[Complete]'}
+    </span>
+  )}
+/>
+```
+
 ### Using Ref for External Control
 
 ```tsx
@@ -132,6 +146,40 @@ function App() {
 />
 ```
 
+## Suffix vs Action
+
+The component supports two ways to display additional content:
+
+### Action Button
+- Only visible when text is truncated
+- Disappears when text doesn't overflow
+- Used for expand/collapse functionality
+
+### Suffix
+- **Always visible**, regardless of text overflow
+- Receives two parameters:
+  - `expanded`: Current expand/collapse state
+  - `isOverflow`: Whether the text is truncated
+- Perfect for status indicators, badges, or persistent actions
+
+**Important**: `action` and `suffix` are mutually exclusive. If both are provided, `suffix` takes priority.
+
+```tsx
+// Suffix shows different states
+<TextEllipsis
+  rows={2}
+  content={longText}
+  suffix={(expanded, isOverflow) => (
+    <span style={{ color: isOverflow ? 'orange' : 'green' }}>
+      {isOverflow
+        ? (expanded ? '▲ Show Less' : '▼ Show More')
+        : '✓ Complete'
+      }
+    </span>
+  )}
+/>
+```
+
 ## API
 
 ### Props
@@ -148,6 +196,7 @@ function App() {
 | position | `'start' \| 'middle' \| 'end'` | `'end'` | Position of the ellipsis |
 | onClickAction | `(e: React.MouseEvent) => void` | - | Callback when action button is clicked |
 | action | `(expanded: boolean) => React.ReactNode` | - | Custom render function for action button |
+| suffix | `(expanded: boolean, isOverflow: boolean) => React.ReactNode` | - | Custom render function for suffix (always visible). Mutually exclusive with `action` - if both are provided, `suffix` takes priority |
 
 ### Ref Methods
 

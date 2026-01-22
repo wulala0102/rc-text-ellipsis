@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>rc-text-ellipsis - React Text Ellipsis Component</title>
   <meta name="description" content="A powerful and flexible React text truncation component with expand/collapse functionality">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
   <style>
     * {
       margin: 0;
@@ -81,14 +82,16 @@
       font-size: 1.1rem;
     }
     .code-block {
-      background: #282c34;
-      color: #abb2bf;
-      padding: 1rem;
-      border-radius: 4px;
-      overflow-x: auto;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 0.875rem;
       margin-top: 1rem;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .code-block pre {
+      margin: 0 !important;
+      border-radius: 4px;
+    }
+    .code-block code {
+      font-size: 0.875rem;
     }
     .footer {
       text-align: center;
@@ -144,5 +147,7 @@
   </div>
 
   <script type="module" src="/index.tsx"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
 </body>
 </html>

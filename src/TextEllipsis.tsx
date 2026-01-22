@@ -13,6 +13,7 @@ export interface TextEllipsisProps {
   position?: 'start' | 'middle' | 'end';
   onClickAction?: (e: React.MouseEvent) => void;
   action?: (expanded: boolean) => React.ReactNode;
+  suffix?: (expanded: boolean, isOverflow: boolean) => React.ReactNode;
 }
 
 export interface TextEllipsisRef {
@@ -32,12 +33,18 @@ const TextEllipsis = React.forwardRef<TextEllipsisRef, TextEllipsisProps>(
       position = 'end',
       onClickAction,
       action,
+      suffix,
     } = props;
 
     const rootRef = React.useRef<HTMLDivElement>(null);
     const actionRef = React.useRef<HTMLSpanElement>(null);
+    const suffixRef = React.useRef<HTMLSpanElement>(null);
 
-    const { text, expanded, hasAction, toggle } = useTextEllipsis({
+    // action 和 suffix 互斥，优先使用 suffix
+    // 当提供了 suffix 时使用 suffix 模式，否则使用 action 模式
+    const useSuffix = !!suffix;
+
+    const { text, expanded, hasAction, isOverflow, toggle } = useTextEllipsis({
       content,
       rows,
       dots,
@@ -45,7 +52,9 @@ const TextEllipsis = React.forwardRef<TextEllipsisRef, TextEllipsisProps>(
       expandText,
       rootRef,
       actionRef,
-      action,
+      suffixRef,
+      action: useSuffix ? undefined : action,
+      suffix: useSuffix ? suffix : undefined,
     });
 
     const handleClickAction = (event: React.MouseEvent) => {
@@ -72,6 +81,21 @@ const TextEllipsis = React.forwardRef<TextEllipsisRef, TextEllipsisProps>(
       );
     };
 
+    const renderSuffix = () => {
+      if (!suffix) {
+        return null;
+      }
+      const suffixContent = suffix(expanded, isOverflow);
+      return (
+        <span
+          ref={suffixRef}
+          className="rc-text-ellipsis__suffix"
+        >
+          {suffixContent}
+        </span>
+      );
+    };
+
     return (
       <div
         ref={rootRef}
@@ -79,7 +103,7 @@ const TextEllipsis = React.forwardRef<TextEllipsisRef, TextEllipsisProps>(
         style={style}
       >
         {expanded ? content : text}
-        {hasAction && renderAction()}
+        {useSuffix ? renderSuffix() : (hasAction && renderAction())}
       </div>
     );
   },

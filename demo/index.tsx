@@ -6,6 +6,33 @@ import TextEllipsis from '../src/TextEllipsis.tsx';
 const longText =
   'This is a very long text that needs to be truncated with ellipsis. It contains multiple sentences and should demonstrate the text ellipsis functionality. The component supports different positions for the ellipsis including start, middle, and end positions. You can also expand and collapse the text by clicking the action button. This component is perfect for limiting text in cards, lists, descriptions, and any other UI elements where space is limited.';
 
+// Declare Prism for TypeScript
+declare global {
+  interface Window {
+    Prism?: any;
+  }
+}
+
+const CodeBlock: React.FC<{ code: string }> = ({ code }) => {
+  const codeRef = React.useRef<HTMLElement>(null);
+
+  React.useEffect(() => {
+    if (codeRef.current && window.Prism) {
+      window.Prism.highlightElement(codeRef.current);
+    }
+  }, [code]);
+
+  return (
+    <div className="code-block">
+      <pre>
+        <code ref={codeRef} className="language-jsx">
+          {code}
+        </code>
+      </pre>
+    </div>
+  );
+};
+
 const App: React.FC = () => {
   const textEllipsisRef = React.useRef<any>(null);
 
@@ -18,6 +45,7 @@ const App: React.FC = () => {
           <li>📍 Three ellipsis positions: start, middle, end</li>
           <li>🔄 Expand/collapse functionality</li>
           <li>🎨 Customizable action buttons</li>
+          <li>🔖 Always-visible suffix with overflow detection</li>
           <li>📱 Responsive - auto-recalculates on window resize</li>
           <li>🎛️ Imperative API via ref</li>
           <li>💪 TypeScript support</li>
@@ -27,9 +55,7 @@ const App: React.FC = () => {
 
       <div className="section">
         <h2>🚀 Installation</h2>
-        <div className="code-block">
-          npm install rc-text-ellipsis --save
-        </div>
+        <CodeBlock code="npm install rc-text-ellipsis --save" />
       </div>
 
       <div className="section">
@@ -43,14 +69,12 @@ const App: React.FC = () => {
             expandText="Expand"
             collapseText="Collapse"
           />
-          <div className="code-block">
-{`<TextEllipsis
+          <CodeBlock code={`<TextEllipsis
   rows={1}
   content="Your text here..."
   expandText="Expand"
   collapseText="Collapse"
-/>`}
-          </div>
+/>`} />
         </div>
 
         <div className="demo-box">
@@ -61,14 +85,12 @@ const App: React.FC = () => {
             expandText="Read More"
             collapseText="Show Less"
           />
-          <div className="code-block">
-{`<TextEllipsis
+          <CodeBlock code={`<TextEllipsis
   rows={3}
   content="Your text here..."
   expandText="Read More"
   collapseText="Show Less"
-/>`}
-          </div>
+/>`} />
         </div>
 
         <div className="demo-box">
@@ -80,15 +102,13 @@ const App: React.FC = () => {
             expandText="More"
             collapseText="Less"
           />
-          <div className="code-block">
-{`<TextEllipsis
+          <CodeBlock code={`<TextEllipsis
   rows={2}
   dots="---"
   content="Your text here..."
   expandText="More"
   collapseText="Less"
-/>`}
-          </div>
+/>`} />
         </div>
       </div>
 
@@ -143,8 +163,7 @@ const App: React.FC = () => {
               </span>
             )}
           />
-          <div className="code-block">
-{`<TextEllipsis
+          <CodeBlock code={`<TextEllipsis
   rows={2}
   content="Your text here..."
   action={(expanded) => (
@@ -152,8 +171,124 @@ const App: React.FC = () => {
       {expanded ? '▲ Collapse' : '▼ Expand'}
     </span>
   )}
-/>`}
+/>`} />
+        </div>
+      </div>
+
+      <div className="section">
+        <h2>🔖 Suffix (Always Visible)</h2>
+
+        <div className="demo-box">
+          <div className="demo-title">Basic Suffix - Shows Different States</div>
+          <TextEllipsis
+            rows={2}
+            content={longText}
+            suffix={(expanded, isOverflow) => (
+              <span style={{ color: '#3498db', marginLeft: '4px', fontWeight: 'bold' }}>
+                {isOverflow ? (expanded ? '[Collapse]' : '[Expand]') : '[Complete]'}
+              </span>
+            )}
+          />
+          <CodeBlock code={`<TextEllipsis
+  rows={2}
+  content="Your text here..."
+  suffix={(expanded, isOverflow) => (
+    <span>
+      {isOverflow
+        ? (expanded ? '[Collapse]' : '[Expand]')
+        : '[Complete]'
+      }
+    </span>
+  )}
+/>`} />
+        </div>
+
+        <div className="demo-box">
+          <div className="demo-title">Styled Suffix with Icons</div>
+          <TextEllipsis
+            rows={2}
+            content={longText}
+            suffix={(expanded, isOverflow) => (
+              <span
+                style={{
+                  color: '#fff',
+                  background: isOverflow ? '#e74c3c' : '#27ae60',
+                  padding: '2px 8px',
+                  borderRadius: '4px',
+                  marginLeft: '8px',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                }}
+              >
+                {isOverflow ? (expanded ? '▲' : '▼') : '✓'}
+              </span>
+            )}
+          />
+          <CodeBlock code={`<TextEllipsis
+  rows={2}
+  content="Your text here..."
+  suffix={(expanded, isOverflow) => (
+    <span style={{
+      background: isOverflow ? '#e74c3c' : '#27ae60',
+      padding: '2px 8px',
+      borderRadius: '4px'
+    }}>
+      {isOverflow ? (expanded ? '▲' : '▼') : '✓'}
+    </span>
+  )}
+/>`} />
+        </div>
+
+        <div className="demo-box">
+          <div className="demo-title">Suffix on Short Text (No Overflow)</div>
+          <TextEllipsis
+            rows={3}
+            content="This is a short text that doesn't need truncation."
+            suffix={(expanded, isOverflow) => (
+              <span style={{
+                color: isOverflow ? '#e67e22' : '#16a085',
+                marginLeft: '4px',
+                fontWeight: 'bold'
+              }}>
+                {isOverflow ? '[Has More]' : '[End]'}
+              </span>
+            )}
+          />
+          <CodeBlock code={`<TextEllipsis
+  rows={3}
+  content="Short text"
+  suffix={(expanded, isOverflow) => (
+    <span style={{ color: isOverflow ? 'orange' : 'green' }}>
+      {isOverflow ? '[Has More]' : '[End]'}
+    </span>
+  )}
+/>`} />
+        </div>
+
+        <div className="demo-box">
+          <div className="demo-title">⚠️ Suffix takes priority over Action</div>
+          <div style={{ marginBottom: '1rem', color: '#e67e22' }}>
+            <strong>Note:</strong> When both suffix and action are provided, suffix will be used.
           </div>
+          <TextEllipsis
+            rows={2}
+            content={longText}
+            expandText="Expand"
+            collapseText="Collapse"
+            suffix={(expanded, isOverflow) => (
+              <span style={{ color: '#27ae60', fontWeight: 'bold' }}>
+                [Suffix is shown]
+              </span>
+            )}
+          />
+          <CodeBlock code={`<TextEllipsis
+  rows={2}
+  content="Your text here..."
+  expandText="Expand"
+  collapseText="Collapse"
+  suffix={() => <span>[Suffix shown]</span>}
+/>
+// Suffix has priority, action will be ignored`} />
         </div>
       </div>
 
@@ -180,8 +315,7 @@ const App: React.FC = () => {
               Toggle
             </button>
           </div>
-          <div className="code-block">
-{`const ref = useRef();
+          <CodeBlock code={`const ref = useRef();
 
 <TextEllipsis
   ref={ref}
@@ -191,8 +325,7 @@ const App: React.FC = () => {
 
 <button onClick={() => ref.current?.toggle(true)}>
   Expand
-</button>`}
-          </div>
+</button>`} />
         </div>
       </div>
 
@@ -249,6 +382,12 @@ const App: React.FC = () => {
               <td style={{ padding: '0.75rem', borderBottom: '1px solid #eee' }}>(expanded) =&gt; ReactNode</td>
               <td style={{ padding: '0.75rem', borderBottom: '1px solid #eee' }}>-</td>
               <td style={{ padding: '0.75rem', borderBottom: '1px solid #eee' }}>Custom action button renderer</td>
+            </tr>
+            <tr>
+              <td style={{ padding: '0.75rem', borderBottom: '1px solid #eee' }}><code>suffix</code></td>
+              <td style={{ padding: '0.75rem', borderBottom: '1px solid #eee' }}>(expanded, isOverflow) =&gt; ReactNode</td>
+              <td style={{ padding: '0.75rem', borderBottom: '1px solid #eee' }}>-</td>
+              <td style={{ padding: '0.75rem', borderBottom: '1px solid #eee' }}>Custom suffix renderer (always visible, takes priority over action)</td>
             </tr>
             <tr>
               <td style={{ padding: '0.75rem' }}><code>onClickAction</code></td>
